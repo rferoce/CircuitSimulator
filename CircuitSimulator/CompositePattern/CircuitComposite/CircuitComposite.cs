@@ -6,7 +6,21 @@ using System.Threading.Tasks;
 
 namespace CircuitSimulator
 {
-    public class _CircuitComposite : CircuitComponent
+    public class _CircuitComposite : ICircuitComponent
     {
+        private ICircuitComponent _circuitComponent;
+
+        public ICircuitComponent Parent
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+
+            set
+            {
+                throw new NotImplementedException();
+            }
+        }
     }
 }

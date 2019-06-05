@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace CircuitSimulator
 {
-    public abstract class CircuitComponent
+    public interface ICircuitComponent
     {
-
+        ICircuitComponent Parent { get; set; }
     }
 }

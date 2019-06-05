@@ -6,7 +6,19 @@ using System.Threading.Tasks;
 
 namespace CircuitSimulator
 {
-    public class NodeComposite : NodeComponent
+    public class NodeComposite : INodeComponent
     {
+        public INodeComponent Parent
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+
+            set
+            {
+                throw new NotImplementedException();
+            }
+        }
     }
 }

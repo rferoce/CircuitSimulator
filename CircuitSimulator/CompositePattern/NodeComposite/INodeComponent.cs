@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace CircuitSimulator
 {
-    public class NodeComponent
+    public interface INodeComponent
     {
+        INodeComponent Parent { get; set; }
     }
 }

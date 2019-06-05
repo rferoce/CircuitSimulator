@@ -8,5 +8,11 @@ namespace CircuitSimulator
 {
     public interface INodeVisitor
     {
+        void VisitNode(AND node);
+        void VisitNode(NAND node);
+        void VisitNode(NOR node);
+        void VisitNode(NOT node);
+        void VisitNode(OR node);
+        void VisitNode(XOR node);
     }
 }
