@@ -19,7 +19,7 @@ namespace CircuitSimulator
         // TODO: check parameters?? 
         public void PrepareCircuitSimulator(File[] files)
         {
-            CircuitSimulator _circuitSimulator = new CircuitSimulator();
+            _circuitSimulator = new CircuitSimulator();
             // Loop over file array and prepareCircuit for each file
             _circuitBuilder.prepareCircuit();
         }
