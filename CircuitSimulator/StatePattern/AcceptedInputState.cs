@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CircuitSimulator
 {
-    public class FileReader
+    public class AcceptedInputState : InputState
     {
     }
 }

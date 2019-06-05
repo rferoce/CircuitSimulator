@@ -6,11 +6,7 @@ using System.Threading.Tasks;
 
 namespace CircuitSimulator
 {
-    class Program
+    public class NodeEnglishDescriptionVisitor : INodeVisitor
     {
-        static void Main(string[] args)
-        {
-            App app = new App();
-        }
     }
 }

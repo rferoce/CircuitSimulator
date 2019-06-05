@@ -4,9 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CircuitSimulator.Model.Nodes
+namespace CircuitSimulator
 {
-    public class ORNode : Node
+    public enum Input
     {
+        INPUT_LOW = 0,
+        INPUT_HIGH = 1
     }
 }

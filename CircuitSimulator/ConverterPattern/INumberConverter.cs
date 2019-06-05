@@ -6,11 +6,9 @@ using System.Threading.Tasks;
 
 namespace CircuitSimulator
 {
-    class Program
+    public interface INumberConverter
     {
-        static void Main(string[] args)
-        {
-            App app = new App();
-        }
+        string ToLocalString(int number);
+        int ToNumerical(string fromText);
     }
 }

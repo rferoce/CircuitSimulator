@@ -1,5 +1,4 @@
-﻿using CircuitSimulator.Model;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace CircuitSimulator
 {
-    public abstract class Node
+    public abstract class CircuitComponent
     {
-        private Mediator _mediator;
+
     }
 }

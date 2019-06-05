@@ -6,8 +6,7 @@ using System.Threading.Tasks;
 
 namespace CircuitSimulator
 {
-    public class ANDNode : Node
+    public class ConsoleReader
     {
-
     }
 }

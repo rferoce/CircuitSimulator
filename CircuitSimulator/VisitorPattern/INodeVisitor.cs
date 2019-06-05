@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CircuitSimulator
 {
-    public class NANDNode : Node
+    public interface INodeVisitor
     {
     }
 }

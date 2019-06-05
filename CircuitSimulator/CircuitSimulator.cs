@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CircuitSimulator.Model;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -8,19 +9,14 @@ using System.Threading.Tasks;
 
 namespace CircuitSimulator
 {
-    public class CircuitSimulator
+    public class CircuitSimulator : Simulator
     {
-        private CircuitBuilder _circuitBuilder;
+        private CircuitComponent _circuitComponent;
+        private INumberConverter _numberConverter;
 
-        public CircuitSimulator(CircuitBuilder circuitBuilder)
+        public CircuitSimulator()
         {
-            _circuitBuilder = circuitBuilder;
-        }
 
-        public void Start()
-        {
-            ArrayList files = new ArrayList();
-            _circuitBuilder.Build(files);
         }
     }
 }

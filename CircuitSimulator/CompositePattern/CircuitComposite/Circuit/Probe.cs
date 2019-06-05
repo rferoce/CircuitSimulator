@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CircuitSimulator.Model
+namespace CircuitSimulator
 {
-    public class Probes
+    public class Probe
     {
-        public int number;
+        public int _probe { get; set; }
     }
 }

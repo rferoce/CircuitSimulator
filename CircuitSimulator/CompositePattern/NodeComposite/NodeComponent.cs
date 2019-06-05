@@ -4,10 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CircuitSimulator.Model
+namespace CircuitSimulator
 {
-    public class Input
+    public class NodeComponent
     {
-        public int number;
     }
 }

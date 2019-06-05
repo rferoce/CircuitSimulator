@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CircuitSimulator.Model.Nodes
+namespace CircuitSimulator
 {
-    public class NORNode : Node
+    public class NAND : Node
     {
     }
 }

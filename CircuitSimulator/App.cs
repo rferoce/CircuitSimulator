@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace CircuitSimulator
 {
-    public class StringParser
+    public class App
     {
+        CircuitSimulatorBuilder simulatorBuilder = new CircuitSimulatorBuilder();
     }
 }

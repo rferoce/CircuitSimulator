@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CircuitSimulator.Model
+namespace CircuitSimulator
 {
-    public abstract class Mediator
+    public class NodeComposite : NodeComponent
     {
     }
 }
