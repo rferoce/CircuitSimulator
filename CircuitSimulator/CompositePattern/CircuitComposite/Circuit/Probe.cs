@@ -6,8 +6,25 @@ using System.Threading.Tasks;
 
 namespace CircuitSimulator
 {
-    public class Probe
-    {
-        public int _probe { get; set; }
+    public class Probe {
+        public ProbeValue _value;
+        public string _name;
+
+        public Probe(string name, ProbeValue value)
+        {
+            _name = name;
+            _value = value;
+        }
+
+
+        public int ToInt()
+        {
+            return (int)_value;
+        }
+        public enum ProbeValue
+        {
+            PROBE_LOW = 0,
+            PROBE_HIGH = 1
+        }
     }
 }

@@ -43,27 +43,30 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="StatePattern\AcceptedInputState.cs" />
+    <Compile Include="CompositePattern\NodeComposite\Node\NodeComponent.cs" />
     <Compile Include="CompositePattern\NodeComposite\Node\AND.cs" />
     <Compile Include="App.cs" />
     <Compile Include="ConverterPattern\BinaryNumberConverter.cs" />
     <Compile Include="CompositePattern\CircuitComposite\Circuit\Circuit.cs" />
     <Compile Include="BuilderPattern\CircuitBuilder.cs" />
-    <Compile Include="CompositePattern\CircuitComposite\CircuitComponent.cs" />
+    <Compile Include="CompositePattern\CircuitComposite\ICircuitComponent.cs" />
     <Compile Include="CircuitSimulator.cs" />
     <Compile Include="BuilderPattern\CircuitSimulatorBuilder.cs" />
     <Compile Include="Readers\ConsoleReader.cs" />
-    <Compile Include="StatePattern\ErrorInputState.cs" />
+    <Compile Include="StatePattern\BaseMonitoringState.cs" />
     <Compile Include="Readers\FileReader.cs" />
     <Compile Include="MediatorPattern\ICircuitMediator.cs" />
+    <Compile Include="StatePattern\ErrorState.cs" />
+    <Compile Include="StatePattern\IMonitoringStatable.cs" />
+    <Compile Include="StatePattern\MonitoringState.cs" />
+    <Compile Include="StatePattern\WarningState.cs" />
     <Compile Include="VisitorPattern\INodeVisitor.cs" />
     <Compile Include="CompositePattern\CircuitComposite\Circuit\Input.cs" />
-    <Compile Include="StatePattern\InputState.cs" />
     <Compile Include="ConverterPattern\INumberConverter.cs" />
     <Compile Include="MediatorPattern\ISimulatorMediator.cs" />
     <Compile Include="CompositePattern\NodeComposite\Node\NAND.cs" />
     <Compile Include="CompositePattern\NodeComposite\Node\Node.cs" />
-    <Compile Include="CompositePattern\NodeComposite\NodeComponent.cs" />
+    <Compile Include="CompositePattern\NodeComposite\INodeComponent.cs" />
     <Compile Include="CompositePattern\NodeComposite\NodeComposite.cs" />
     <Compile Include="VisitorPattern\NodeDrawVisitor.cs" />
     <Compile Include="VisitorPattern\NodeEnglishDescriptionVisitor.cs" />
@@ -84,7 +87,13 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Content Include="Files\Circuit_Decoder.txt" />
+    <Content Include="Files\Circuit_Encoder.txt" />
+    <Content Include="Files\Circuit_FullAdder.txt" />
+    <Content Include="Files\Circuit_InfiniteLoop.txt" />
+    <Content Include="Files\Circuit_NotConnected.txt" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

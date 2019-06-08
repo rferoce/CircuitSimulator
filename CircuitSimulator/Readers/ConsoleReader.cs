@@ -8,5 +8,9 @@ namespace CircuitSimulator
 {
     public class ConsoleReader
     {
+        public string GetInput()
+        {
+            return Console.ReadLine();
+        }
     }
 }

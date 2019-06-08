@@ -8,20 +8,31 @@ namespace CircuitSimulator
 {
     public class CircuitSimulatorBuilder
     {
-        private CircuitSimulator _circuitSimulator;
         private CircuitBuilder _circuitBuilder;
+        private CircuitSimulator _circuitSimulator;
 
+        public CircuitSimulatorBuilder()
+        {
+            _circuitBuilder = new CircuitBuilder();
+        }
         public CircuitSimulator GetPreparedCircuitSimulator()
         {
             return _circuitSimulator;
         }
 
         // TODO: check parameters?? 
-        public void PrepareCircuitSimulator(File[] files)
+        public void PrepareCircuitSimulator(string[] circuitFilePaths)
         {
-            _circuitSimulator = new CircuitSimulator();
-            // Loop over file array and prepareCircuit for each file
-            _circuitBuilder.prepareCircuit();
+            // this is an circuitComponent!! Not an array
+            List<Circuit> circuits = new List<Circuit>();
+
+            foreach (var circuitFilePath in circuitFilePaths)
+            {
+                // Loop over file array and prepareCircuit for each file
+                _circuitBuilder.PrepareCircuit(circuitFilePath);
+                Circuit circuit = _circuitBuilder.GetCircuit();
+                circuits.Add(circuit);
+            }
         }
     }
 }

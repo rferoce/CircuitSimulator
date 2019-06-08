@@ -8,7 +8,7 @@ namespace CircuitSimulator
 {
     public class NodeFactorySingleton
     {
-        private Dictionary<string, Type> _types;
+        private Dictionary<string, Node> _types = new Dictionary<string, Node>();
         private static NodeFactorySingleton _instance;
 
         public static NodeFactorySingleton Instance
@@ -21,15 +21,14 @@ namespace CircuitSimulator
             }
         }
 
-        public void addNodeType(string name, Type type)
+        public void RegisterNode(string name, Node prototype)
         {
-            _types[name] = type;
+            _types[name] = prototype;
         }
 
         public Node CreateNode(string type)
         {
-            Type t = _types[type];
-            Node c = (Node)Activator.CreateInstance(t);
-            return c;        }
+            Node prototype = _types[type];
+            return prototype.Clone();        }
     }
 }
