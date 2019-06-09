@@ -8,20 +8,28 @@ using static CircuitSimulator.Probe;
 
 namespace CircuitSimulator
 {
-    public class Circuit : ICircuitComponent, ICircuitMediator
+    public class Circuit : ICircuitMediator
     {
         private Dictionary<Input, INodeComponent> _inputsCircuitMapping;
         private Dictionary<INodeComponent, Probe> _probesCircuitMapping;
         private Dictionary<INodeComponent, Probe> _finalProbes;
         private INodeVisitor _nodeEnglishDescriptionVisitor;
         private INodeVisitor _nodeDrawVisitor;
-        private string _endResult;
+        private List<Probe> _results;
+        private int _expectedProbeAmount = 2;
+        public ISimulatorMediator _simulatorMediator { get; set; }
 
         public Circuit()
         {
             _finalProbes = new Dictionary<INodeComponent, Probe>();
             _nodeEnglishDescriptionVisitor = new NodeEnglishDescriptionVisitor();
             _nodeDrawVisitor = new NodeDrawVisitor();
+            _results = new List<Probe>();
+        }
+
+        public void SetCircuitMediator(ISimulatorMediator simulatorMediator)
+        {
+            _simulatorMediator = simulatorMediator;
         }
 
         public void SetMappings(Dictionary<Input, INodeComponent> inputsCircuitMapping, Dictionary<INodeComponent, Probe> probesCircuitMapping)
@@ -30,35 +38,52 @@ namespace CircuitSimulator
             _probesCircuitMapping = probesCircuitMapping;
         }
 
-        public ICircuitComponent Parent
+        public List<Input> GetInputs()
         {
-            get
+            List<Input> inputs = new List<Input>();
+            foreach (var inputCircuitMapping in _inputsCircuitMapping)
             {
-                throw new NotImplementedException();
+                inputs.Add(inputCircuitMapping.Key);
             }
 
-            set
+            return inputs;
+        }
+
+        public void SetInputs(List<Input> inputs)
+        {
+            foreach (var input in inputs)
             {
-                throw new NotImplementedException();
+                foreach (var inputCircuitMapping in _inputsCircuitMapping)
+                {
+                    if (input._name == inputCircuitMapping.Key._name)
+                    {
+                        inputCircuitMapping.Key._value = input._value;
+                    }
+                }
             }
+        }
+
+        public List<Probe> GetProbes()
+        {
+            return _results;
         }
 
         public void Run()
         {
             foreach (var inputCircuitMapping in _inputsCircuitMapping)
             {
-                
-                Console.WriteLine("Input with name {0}, has next: ", inputCircuitMapping.Key._name);
+                // Show Input
+                ConsoleWriterSingleton.Instance.ShowInput(inputCircuitMapping.Key._name, inputCircuitMapping.Key.ToInt());
+
+                // Show next of input
                 _inputsCircuitMapping[inputCircuitMapping.Key].FindNextNodes(_inputsCircuitMapping[inputCircuitMapping.Key]);
-                Console.WriteLine();
 
-                RunCircuit(_inputsCircuitMapping[inputCircuitMapping.Key], inputCircuitMapping.Key._value);
+                // Run next
+                RunINodeComponent(_inputsCircuitMapping[inputCircuitMapping.Key], inputCircuitMapping.Key._value);
             }
-
-            Console.WriteLine("End result is {0}", _endResult);
         }
 
-        public void RunCircuit(INodeComponent nodeComposite, InputValue inputValue)
+        public void RunINodeComponent(INodeComponent nodeComposite, InputValue inputValue)
         {
             bool foundNodeChild = false;
 
@@ -75,57 +100,101 @@ namespace CircuitSimulator
             {
                 foreach (var child in nodeComposite.Children)
                 {
-                    RunCircuit(child, inputValue);
+                    RunINodeComponent(child, inputValue);
                 }
             }
-        }
-
-        public int CalculateDelayTime()
-        {
-            throw new NotImplementedException();
         }
 
         public void Notify(Node sender, InputValue result)
         {
-            Console.Write("INFO - ");
-            sender.Accept(_nodeEnglishDescriptionVisitor);
-            Console.Write(", has construction ");
-            sender.Accept(_nodeDrawVisitor);
-            Console.Write(", calculated result: {0}", (int)result);
-            Console.WriteLine();
+            // Show Notify
+            ShowNotify(sender, (int)result);
 
+            // Show next node
             sender.ChildrenToString();
 
             foreach (var child in sender.Parent.Children)
             {
-                // check if one of children of child is a probe
-                foreach (var childChild in child.Children)
+                // Check if sender is connected to Probe
+                foreach (var grandChild in child.Children)
                 {
-                    // Check if sender is connected to ouput!
-                    if (_probesCircuitMapping.ContainsKey(childChild))
-                    {
-                        Console.WriteLine("Next node is: {0}", _probesCircuitMapping[childChild]._name);
-                        Console.WriteLine();
-
-                        _probesCircuitMapping[childChild]._value = (ProbeValue)result;
-                        _finalProbes.Add(childChild, _probesCircuitMapping[childChild]);
-
-                        // Show intermediate end result
-                        Console.ForegroundColor = ConsoleColor.Green;
-                        Console.WriteLine("INFO - Probe with name {0} ends with value {1}", _probesCircuitMapping[childChild]._name, _probesCircuitMapping[childChild].ToInt());
-                        Console.ResetColor();
-
-                        _endResult = _probesCircuitMapping[childChild].ToInt().ToString() + _endResult;
-                    }
+                    CheckGrandChildIsProbe(grandChild, (ProbeValue)result);
                 }
 
+                // Find next node
                 if (!child.CanCalculate())
                 {
-                    // show intermediate result
-                    Console.WriteLine();
-                    RunCircuit(child, result);
+                    RunINodeComponent(child, result);
                 }
             }
+        }
+
+        private void CheckGrandChildIsProbe(INodeComponent grandChild, ProbeValue result)
+        {
+            if (_probesCircuitMapping.ContainsKey(grandChild))
+            {
+                ConsoleWriterSingleton.Instance.ShowNextProbe(_probesCircuitMapping[grandChild]._name);
+
+                _probesCircuitMapping[grandChild]._value = result;
+
+                _finalProbes.Add(grandChild, _probesCircuitMapping[grandChild]);
+
+                // Show probe (intermediate) result
+                ConsoleWriterSingleton.Instance.ShowProbeResult(_probesCircuitMapping[grandChild]._name, _probesCircuitMapping[grandChild].ToInt());
+
+                AddResult(_probesCircuitMapping[grandChild]);
+            }
+        }
+
+        private void ShowNotify(Node sender, int result)
+        {
+            ConsoleWriterSingleton.Instance.ShowFirstComponentOfNodeResult();
+            sender.Accept(_nodeEnglishDescriptionVisitor);
+            ConsoleWriterSingleton.Instance.ShowMiddleComponentOfNodeResult();
+            sender.Accept(_nodeDrawVisitor);
+            ConsoleWriterSingleton.Instance.ShowResultComponentOfNodeResult(result);
+        }
+
+        private void AddResult(Probe result)
+        {
+            _results.Add(result);
+
+            if(_results.Count() == _expectedProbeAmount)
+            {
+                ShowCircuitEndResult();
+                _simulatorMediator.Notify(this, _results);
+            }
+        }
+
+        private void ShowCircuitEndResult()
+        {
+            // Initialize result
+            int[] results = InitializeResult();
+
+            // Convert result to binary 
+            string endResult = string.Join("", results);
+
+            // Show result of circuit
+            ConsoleWriterSingleton.Instance.ShowCircuitResult(endResult);
+        }
+
+        private int[] InitializeResult()
+        {
+            int[] results = new int[2];
+            foreach (var probe in _results)
+            {
+                if (probe._name == "Cout")
+                {
+                    results[0] = probe.ToInt();
+                }
+
+                if (probe._name == "S")
+                {
+                    results[1] = probe.ToInt();
+                }
+            }
+
+            return results;
         }
     }
 }

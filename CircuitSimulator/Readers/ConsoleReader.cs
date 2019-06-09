@@ -24,6 +24,7 @@ namespace CircuitSimulator
                 }
                 else
                 {
+                    ConsoleWriterSingleton.Instance.ShowUnReadableInput();
                     input = "";
                 }
             }
@@ -52,6 +53,7 @@ namespace CircuitSimulator
                 }
                 else
                 {
+                    ConsoleWriterSingleton.Instance.ShowUnReadableInput();
                     input = "";
                 }
             }
