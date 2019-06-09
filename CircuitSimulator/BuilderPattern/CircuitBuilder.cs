@@ -31,6 +31,25 @@ namespace CircuitSimulator
 
         public CircuitBuilder()
         {
+            // Initialize CircuitBuilder 
+            InitializeCircuitBuilder();
+
+            //Initialize NodeFactorySingleton
+            InitializeNodeFactorySingleton();
+        }
+
+        private void InitializeNodeFactorySingleton()
+        {
+            NodeFactorySingleton.Instance.RegisterNode("OR", new OR());
+            NodeFactorySingleton.Instance.RegisterNode("NOT", new NOT());
+            NodeFactorySingleton.Instance.RegisterNode("NAND", new NAND());
+            NodeFactorySingleton.Instance.RegisterNode("AND", new AND());
+            NodeFactorySingleton.Instance.RegisterNode("XOR", new XOR());
+            NodeFactorySingleton.Instance.RegisterNode("NOR", new NOR());
+        }
+
+        private void InitializeCircuitBuilder()
+        {
             _fileReader = new FileReader();
             _stringParser = new StringParser();
             _inCorrectCircuit = false;
@@ -53,13 +72,6 @@ namespace CircuitSimulator
 
             _inputMapping = new Dictionary<Input, INodeComponent>();
             _probeMapping = new Dictionary<INodeComponent, Probe>();
-
-            NodeFactorySingleton.Instance.RegisterNode("OR", new OR());
-            NodeFactorySingleton.Instance.RegisterNode("NOT", new NOT());
-            NodeFactorySingleton.Instance.RegisterNode("NAND", new NAND());
-            NodeFactorySingleton.Instance.RegisterNode("AND", new AND());
-            NodeFactorySingleton.Instance.RegisterNode("XOR", new XOR());
-            NodeFactorySingleton.Instance.RegisterNode("NOR", new NOR());
         }
 
         public void PrepareCircuit(string filePath)
@@ -77,11 +89,11 @@ namespace CircuitSimulator
                 return;
             }
 
-            // step 1: Create Mappings
+            // Create Mappings
             CreateComponentMapping(componentMapping);
             CreateEdgeMapping(edgeMapping);
 
-            // step 2: Create Circuit
+            // Create Circuit
             CreateCircuit();
         }
 
@@ -224,9 +236,10 @@ namespace CircuitSimulator
         {
             foreach (var edge in _edgeMapping)
             {
-                // check if entry is input (existing key in inputMapping) should be the last check!
+                // Check if entry is input (existing key in inputMapping)
                 foreach (var input in _inputs)
                 {
+                    // If entry is input, add entry to input mapping
                     if (edge.Key == input._name)
                     {
                         INodeComponent edgeValuesWrapComposite = CreateNodeComponent(edge);

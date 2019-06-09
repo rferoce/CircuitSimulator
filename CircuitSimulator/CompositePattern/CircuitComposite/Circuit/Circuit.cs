@@ -21,6 +21,12 @@ namespace CircuitSimulator
 
         public Circuit()
         {
+            // Initialize Circuit 
+            InitializeCircuit();
+        }
+
+        private void InitializeCircuit()
+        {
             _finalProbes = new Dictionary<INodeComponent, Probe>();
             _nodeEnglishDescriptionVisitor = new NodeEnglishDescriptionVisitor();
             _nodeDrawVisitor = new NodeDrawVisitor();
@@ -89,6 +95,7 @@ namespace CircuitSimulator
 
             foreach (var child in nodeComposite.Children)
             {
+                // Check whether child is Node
                 if (child.CanCalculate())
                 {
                     child.AddInput(inputValue);
@@ -96,6 +103,7 @@ namespace CircuitSimulator
                 }
             }
 
+            // If no nodeChild is found, run children folder
             if (!foundNodeChild)
             {
                 foreach (var child in nodeComposite.Children)
@@ -133,15 +141,19 @@ namespace CircuitSimulator
         {
             if (_probesCircuitMapping.ContainsKey(grandChild))
             {
+                // Show next (is probe)
                 ConsoleWriterSingleton.Instance.ShowNextProbe(_probesCircuitMapping[grandChild]._name);
 
+                // Set result of probe
                 _probesCircuitMapping[grandChild]._value = result;
 
+                // Add probe to final probes mapping
                 _finalProbes.Add(grandChild, _probesCircuitMapping[grandChild]);
 
                 // Show probe (intermediate) result
                 ConsoleWriterSingleton.Instance.ShowProbeResult(_probesCircuitMapping[grandChild]._name, _probesCircuitMapping[grandChild].ToInt());
 
+                // Add probe as circuit result
                 AddResult(_probesCircuitMapping[grandChild]);
             }
         }

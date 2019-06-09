@@ -90,14 +90,17 @@ namespace CircuitSimulator
         {
             circuitInputs.RemoveAll(c => c._name == "Cin");
 
+            // loop over circuit inputs and change value to input from user given in console
             for (int i = 0; i < circuitInputs.Count; i++)
             {
                 if (circuitFilePathsCounter < reversedInputs[i].Length)
                 {
+                    // set input value to given input value
                     circuitInputs[i]._value = reversedInputs[i][circuitFilePathsCounter];
                 }
                 else
                 {
+                    // set default value of input
                     circuitInputs[i]._value = InputValue.INPUT_LOW;
                 }
             }
@@ -107,6 +110,7 @@ namespace CircuitSimulator
 
         private List<InputValue[]> ReverseInputs(List<InputValue[]> inputs)
         {
+            // Reverse given list of inputs
             List<InputValue[]> reversedInputs = new List<InputValue[]>();
             foreach (var input in inputs)
             {

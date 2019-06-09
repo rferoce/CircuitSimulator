@@ -9,41 +9,43 @@ namespace CircuitSimulator.Readers
 {
     public class InputParser
     {
-        public InputValue[] Parse(int number)
-        {
-            List<InputValue> inputValues = new List<InputValue>();
-            foreach (char character in Convert.ToString(number, 2))
-            {
-                int inputValue;
-                Int32.TryParse(character.ToString(), out inputValue);
-                inputValues.Add((InputValue)inputValue);
-            }
-
-            return inputValues.ToArray();
-        }
+        private List<InputValue> _consoleInputs;
+        private List<InputValue[]> _circuitInputs;
 
         public List<InputValue[]> ParseInputs(int[] inputs)
         {
-            List<InputValue[]> circuitInputs = new List<InputValue[]>();
-            List<InputValue> consoleInputs;
+            _circuitInputs = new List<InputValue[]>();
+            
+            // Parse int to inputValue
             foreach (int input in inputs)
             {
-                consoleInputs = new List<InputValue>();
-
-                foreach (char character in Convert.ToString(input, 2))
-                {
-                    int inputValue;
-                    if (Int32.TryParse(character.ToString(), out inputValue))
-                    {
-                        InputValue circuitInputValue = (InputValue)inputValue;
-                        consoleInputs.Add(circuitInputValue);
-                    }
-                }
-
-                circuitInputs.Add(consoleInputs.ToArray());
+                ParseIntToInputValue(input);
             }
 
-            return circuitInputs;
+            return _circuitInputs;
+        }
+
+        private void ParseIntToInputValue(int input)
+        {
+            _consoleInputs = new List<InputValue>();
+
+            foreach (char character in Convert.ToString(input, 2))
+            {
+                // Parse character to inputValue
+                ParseCharToInputValue(character);
+            }
+
+            _circuitInputs.Add(_consoleInputs.ToArray());
+        }
+
+        private void ParseCharToInputValue(char character)
+        {
+            int inputValue;
+            if (Int32.TryParse(character.ToString(), out inputValue))
+            {
+                InputValue circuitInputValue = (InputValue)inputValue;
+                _consoleInputs.Add(circuitInputValue);
+            }
         }
     }
 }

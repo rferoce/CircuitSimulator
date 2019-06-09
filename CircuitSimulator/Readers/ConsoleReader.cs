@@ -11,6 +11,7 @@ namespace CircuitSimulator
     {
         public int ReadInput()
         {
+            // Read console input value and check whether value is a number
             string input = "";
             int number = 0;
 
@@ -20,6 +21,7 @@ namespace CircuitSimulator
 
                 if (Int32.TryParse(input, out number))
                 {
+                    // If input is a negative number, turn it into a positive one
                     if (number < 0)
                         number = number * -1;
                     break;
@@ -36,6 +38,7 @@ namespace CircuitSimulator
 
         public bool ReadAnswer()
         {
+            // Check if user answered whether to calculate another calculation
             string input = "";
             bool answer = false;
 

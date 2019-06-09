@@ -43,8 +43,10 @@ namespace CircuitSimulator
         {
             bool foundNodeChild = false;
 
+            // Loop through all children to Show English description of all Nodes
             foreach (var child in nodeComposite.Children)
             {
+                // If child is Node, show English description
                 if (child.CanCalculate())
                 {
                     ConsoleWriterSingleton.Instance.ShowNextNode();
@@ -55,6 +57,7 @@ namespace CircuitSimulator
                 }
             }
 
+            // Find next Node in children
             if (!foundNodeChild)
             {
                 foreach (var child in nodeComposite.Children)

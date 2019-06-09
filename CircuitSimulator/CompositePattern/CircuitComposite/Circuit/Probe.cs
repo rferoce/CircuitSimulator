@@ -16,7 +16,6 @@ namespace CircuitSimulator
             _value = value;
         }
 
-
         public int ToInt()
         {
             return (int)_value;
