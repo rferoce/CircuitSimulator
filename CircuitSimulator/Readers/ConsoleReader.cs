@@ -20,6 +20,8 @@ namespace CircuitSimulator
 
                 if (Int32.TryParse(input, out number))
                 {
+                    if (number < 0)
+                        number = number * -1;
                     break;
                 }
                 else

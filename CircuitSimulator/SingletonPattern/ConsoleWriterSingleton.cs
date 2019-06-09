@@ -20,7 +20,7 @@ namespace CircuitSimulator
             }
         }
 
-        public void ShowStart()
+        public static void ShowStart()
         {
             Console.WriteLine();
             Console.WriteLine("     Welcome to this CircuitSimulator!");
@@ -32,7 +32,7 @@ namespace CircuitSimulator
             Console.WriteLine("     Enjoy our CircuitSimulator!");
             Console.WriteLine("---------------------------------------------------------------------------------------------------------");
             Console.WriteLine();
-            Console.WriteLine("Which 2 numbers do you want to be calculated togethether by the CircuitSimulator?");
+            Console.WriteLine("Which 2 numbers from 0 to 1.000.000.000‬ do you want to be calculated togethether by the CircuitSimulator?");
         }
 
         public void ShowUnReadableInput()
@@ -70,7 +70,7 @@ namespace CircuitSimulator
 
         public void AskInput()
         {
-            Console.WriteLine("Please enter a whole number (without a comma and numbers after the comma) followed by pressing [Enter]");
+            Console.WriteLine("Please enter a whole numerical number (without a comma and numbers after the comma) followed by pressing [Enter]");
         }
 
         public void AskForNewSimulation()

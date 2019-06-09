@@ -15,7 +15,7 @@ namespace CircuitSimulator
         private InputParser _inputParser;
         private BaseMonitorState _currentState;
         private CircuitSimulatorBuilder _circuitSimulatorBuilder;
-        private CircuitSimulator _circuitSimulator;
+        private Simulator _simulator;
         private List<int> _userInputs;
         private bool _appIsRunning;
 
@@ -41,10 +41,11 @@ namespace CircuitSimulator
                     _consoleReader.ReadLine();
                     Environment.Exit(0);
                 }
-                _circuitSimulator = _circuitSimulatorBuilder.GetPreparedCircuitSimulator();
+
+                _simulator = _circuitSimulatorBuilder.GetPreparedCircuitSimulator();
 
                 // Run prepared circuitSimulator
-                _circuitSimulator.Run();
+                _simulator.Run();
 
 
                 // Ask for another calculation
@@ -100,7 +101,7 @@ namespace CircuitSimulator
             _userInputs = new List<int>();
             _currentState = new MonitoringState(this);
             _circuitSimulatorBuilder = new CircuitSimulatorBuilder();
-            ConsoleWriterSingleton.Instance.ShowStart();
+            ConsoleWriterSingleton.ShowStart();
         }
 
         public int GetAmountOfCircuits(int[] inputs)

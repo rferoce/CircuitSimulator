@@ -91,21 +91,17 @@ namespace CircuitSimulator
             ConsoleWriterSingleton.Instance.ShowSimulatorEndresult(binaryResult, numericalResult);
         }
 
-        private void InitializeEndResult()
+        public override void InitializeEndResult()
         {
             _endResult = new List<int>();
-            
-            // Add S Probe values to end result
-            AddProbeValuesToEndresult();
 
-            // Add Cout Probe value of last executed circuit to end result
-            AddLastCoutValueToEndResult();
+            base.InitializeEndResult();
 
             // Set end result in correct order
             _endResult.Reverse();
         }
 
-        private void AddLastCoutValueToEndResult()
+        public override void AddLastCoutValueToEndResult()
         {
             Circuit lastExecutedCircuit = _circuits[_circuits.Count() - 1];
 
@@ -120,7 +116,7 @@ namespace CircuitSimulator
             }
         }
 
-        private void AddProbeValuesToEndresult()
+        public override void AddProbeValuesToEndresult()
         {
             int index = 0;
             foreach (var circuit in _circuits)

@@ -47,7 +47,6 @@
     <Compile Include="CompositePattern\NodeComposite\Node\AND.cs" />
     <Compile Include="App.cs" />
     <Compile Include="SingletonPattern\ConsoleWriterSingleton.cs" />
-    <Compile Include="ConverterPattern\BinaryNumberConverter.cs" />
     <Compile Include="CompositePattern\CircuitComposite\Circuit\Circuit.cs" />
     <Compile Include="BuilderPattern\CircuitBuilder.cs" />
     <Compile Include="CircuitSimulator.cs" />
@@ -63,7 +62,6 @@
     <Compile Include="StatePattern\WarningState.cs" />
     <Compile Include="VisitorPattern\INodeVisitor.cs" />
     <Compile Include="CompositePattern\CircuitComposite\Circuit\Input.cs" />
-    <Compile Include="ConverterPattern\INumberConverter.cs" />
     <Compile Include="MediatorPattern\ISimulatorMediator.cs" />
     <Compile Include="CompositePattern\NodeComposite\Node\NAND.cs" />
     <Compile Include="CompositePattern\NodeComposite\Node\Node.cs" />
@@ -74,18 +72,17 @@
     <Compile Include="SingletonPattern\NodeFactorySingleton.cs" />
     <Compile Include="CompositePattern\NodeComposite\Node\NOR.cs" />
     <Compile Include="CompositePattern\NodeComposite\Node\NOT.cs" />
-    <Compile Include="ConverterPattern\NumericalNumberConverter.cs" />
     <Compile Include="CompositePattern\NodeComposite\Node\OR.cs" />
     <Compile Include="CompositePattern\CircuitComposite\Circuit\Probe.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ConverterPattern\RomanNumberConverter.cs" />
     <Compile Include="Simulator.cs" />
     <Compile Include="Readers\StringParser.cs" />
     <Compile Include="CompositePattern\NodeComposite\Node\XOR.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="ClassDiagram1.cd" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Files\Circuit_Decoder.txt" />

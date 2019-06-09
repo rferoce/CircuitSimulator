@@ -9,7 +9,6 @@ namespace CircuitSimulator
 {
     public class FileReader
     {
-        private StringParser _stringParser;
         public string ReadFile(string filePath)
         {
             try
