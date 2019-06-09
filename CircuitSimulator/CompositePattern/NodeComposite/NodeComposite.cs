@@ -47,9 +47,9 @@ namespace CircuitSimulator
             {
                 if (child.CanCalculate())
                 {
-                    Console.Write("Next Node is: ");
+                    ConsoleWriterSingleton.Instance.ShowNextNode();
                     child.Accept(_nodeEnglishDescriptionVisitor);
-                    Console.WriteLine();
+                    ConsoleWriterSingleton.Instance.ShowEmptyLine();
 
                     foundNodeChild = true;
                 }

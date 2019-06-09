@@ -18,8 +18,7 @@ namespace CircuitSimulator.StatePattern
             }
             else
             {
-                Console.WriteLine("Number is normal: {0}", number);
-                Console.ResetColor();
+                ConsoleWriterSingleton.Instance.ShowMonitoringStateMessage(number);
             }
         }
     }

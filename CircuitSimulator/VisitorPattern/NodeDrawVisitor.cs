@@ -10,32 +10,32 @@ namespace CircuitSimulator
     {
         public void VisitNode(NOR node)
         {
-            Console.Write(">|>=1|.--");
+            ConsoleWriterSingleton.Instance.DrawNode(">|>=1|.--");
         }
 
         public void VisitNode(OR node)
         {
-            Console.Write(">|>=1|--");
+            ConsoleWriterSingleton.Instance.DrawNode(">|>=1|--");
         }
 
         public void VisitNode(XOR node)
         {
-            Console.Write(">|=1|--");
+            ConsoleWriterSingleton.Instance.DrawNode(">|=1|--");
         }
 
         public void VisitNode(NOT node)
         {
-            Console.Write("--|>.--");
+            ConsoleWriterSingleton.Instance.DrawNode("--|>.--");
         }
 
         public void VisitNode(NAND node)
         {
-            Console.Write(">|&|.--");
+            ConsoleWriterSingleton.Instance.DrawNode(">|&|.--");
         }
 
         public void VisitNode(AND node)
         {
-            Console.Write(">|&|--");
+            ConsoleWriterSingleton.Instance.DrawNode(">|&|--");
         }
     }
 }

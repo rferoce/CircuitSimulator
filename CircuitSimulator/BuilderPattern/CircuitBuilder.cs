@@ -13,32 +13,27 @@ namespace CircuitSimulator
     {
         private FileReader _fileReader;
         private StringParser _stringParser;
+        public bool _inCorrectCircuit { get; set; }
 
         private Dictionary<string, InputValue> _inputDictionary;
         private Dictionary<string, ProbeValue> _probeDictionary;
 
-        private List<KeyValuePair<string, string[]>> checkedEdges = new List<KeyValuePair<string, string[]>>();
+        private List<KeyValuePair<string, string[]>> _checkedEdges;
 
-        private List<Input> inputs = new List<Input>();
-        private List<Probe> probes = new List<Probe>();
-        private Dictionary<string, Node> nodeMapping = new Dictionary<string, Node>();
-        private Dictionary<string, string[]> edgeMapping = new Dictionary<string, string[]>();
+        private List<Input> _inputs;
+        private List<Probe> _probes;
+        private Dictionary<string, Node> _nodeMapping;
+        private Dictionary<string, string[]> _edgeMapping;
 
-        private Dictionary<Input, INodeComponent> inputMapping = new Dictionary<Input, INodeComponent>();
-        private Dictionary<INodeComponent, Probe> probeMapping = new Dictionary<INodeComponent, Probe>();
+        private Dictionary<Input, INodeComponent> _inputMapping;
+        private Dictionary<INodeComponent, Probe> _probeMapping;
         private Circuit _circuit;
 
         public CircuitBuilder()
         {
             _fileReader = new FileReader();
             _stringParser = new StringParser();
-
-            NodeFactorySingleton.Instance.RegisterNode("OR", new OR());
-            NodeFactorySingleton.Instance.RegisterNode("NOT", new NOT());
-            NodeFactorySingleton.Instance.RegisterNode("NAND", new NAND());
-            NodeFactorySingleton.Instance.RegisterNode("AND", new AND());
-            NodeFactorySingleton.Instance.RegisterNode("XOR", new XOR());
-            NodeFactorySingleton.Instance.RegisterNode("NOR", new NOR());
+            _inCorrectCircuit = false;
 
             _inputDictionary = new Dictionary<string, InputValue> {
                     { "INPUT_LOW", InputValue.INPUT_LOW},
@@ -49,13 +44,28 @@ namespace CircuitSimulator
                     { "PROBE", ProbeValue.PROBE_LOW},
                 };
 
+            _checkedEdges = new List<KeyValuePair<string, string[]>>();
+
+            _inputs = new List<Input>();
+            _probes = new List<Probe>();
+            _nodeMapping = new Dictionary<string, Node>();
+            _edgeMapping = new Dictionary<string, string[]>();
+
+            _inputMapping = new Dictionary<Input, INodeComponent>();
+            _probeMapping = new Dictionary<INodeComponent, Probe>();
+
+            NodeFactorySingleton.Instance.RegisterNode("OR", new OR());
+            NodeFactorySingleton.Instance.RegisterNode("NOT", new NOT());
+            NodeFactorySingleton.Instance.RegisterNode("NAND", new NAND());
+            NodeFactorySingleton.Instance.RegisterNode("AND", new AND());
+            NodeFactorySingleton.Instance.RegisterNode("XOR", new XOR());
+            NodeFactorySingleton.Instance.RegisterNode("NOR", new NOR());
         }
 
         public void PrepareCircuit(string filePath)
         {
             // Read file and create mapping of strings
             string fileString = _fileReader.ReadFile(filePath);
-
             Dictionary<string, string[]>[] fileStringMapping = _stringParser.readFileString(fileString);
             Dictionary<string, string[]> componentMapping = fileStringMapping[0];
             Dictionary<string, string[]> edgeMapping = fileStringMapping[1];
@@ -63,9 +73,7 @@ namespace CircuitSimulator
             bool invalidCircuit = CheckCircuit(componentMapping, edgeMapping);
             if (invalidCircuit)
             {
-                Console.WriteLine("Press any key to exit");
-                Console.ReadLine();
-                Environment.Exit(0);
+                _inCorrectCircuit = true;
                 return;
             }
 
@@ -75,10 +83,6 @@ namespace CircuitSimulator
 
             // step 2: Create Circuit
             CreateCircuit();
-
-            // TODO: remove this quick test
-            _circuit.Run();
-            Console.ReadLine();
         }
 
         public Circuit GetCircuit()
@@ -98,10 +102,10 @@ namespace CircuitSimulator
         {
             foreach (KeyValuePair<string, string[]> edge in edgeMapping)
             {
-                checkedEdges = new List<KeyValuePair<string, string[]>>();
+                _checkedEdges = new List<KeyValuePair<string, string[]>>();
                 if (componentMapping[edge.Key][0] == "INPUT_HIGH" || componentMapping[edge.Key][0] == "INPUT_LOW")
                 {
-                    checkedEdges.Add(edge);
+                    _checkedEdges.Add(edge);
                     if (CheckEdge(edge, edgeMapping, componentMapping))
                     {
                         return true;
@@ -121,19 +125,19 @@ namespace CircuitSimulator
                     if (componentMapping[edgeMapping[edgeValue][0]][0] != "PROBE")
                     {
                         KeyValuePair<string, string[]> nextEdge = new KeyValuePair<string, string[]>(edgeValue, edgeMapping[edgeValue]);
-                        if (checkedEdges.Contains(nextEdge))
+                        if (_checkedEdges.Contains(nextEdge))
                         {
-                            Console.WriteLine("ERROR: Found infinite loop. Node with name {0} was called multiple times", nextEdge.Key);
+                            ConsoleWriterSingleton.Instance.ShowInfiniteLoopMessage(nextEdge.Key);
                             return true;
                         }
 
-                        checkedEdges.Add(nextEdge);
+                        _checkedEdges.Add(nextEdge);
                         if (CheckEdge(nextEdge, edgeMapping, componentMapping))
                             return true;
                     }
                     else
                     {
-                        checkedEdges = new List<KeyValuePair<string, string[]>>();
+                        _checkedEdges = new List<KeyValuePair<string, string[]>>();
                     }
                 }
             }
@@ -163,7 +167,7 @@ namespace CircuitSimulator
 
                     if (!edgeMapping.ContainsKey(value))
                     {
-                        Console.WriteLine("ERROR: Node with name {0} is not linked to next Node!", value);
+                        ConsoleWriterSingleton.Instance.ShowUnLinkedNodeMessage(value);
                         return true;
                     }
                 }
@@ -180,14 +184,14 @@ namespace CircuitSimulator
                 if (entry.Value[0] == "INPUT_LOW" || entry.Value[0] == "INPUT_HIGH")
                 {
                     // create mapping of Inputs
-                    inputs.Add(new Input(entry.Key, _inputDictionary[entry.Value[0]]));
+                    _inputs.Add(new Input(entry.Key, _inputDictionary[entry.Value[0]]));
                     continue;
                 }
 
                 if (entry.Value[0] == "PROBE")
                 {
                     // create mapping of Probes
-                    probes.Add(new Probe(entry.Key, _probeDictionary[entry.Value[0]]));
+                    _probes.Add(new Probe(entry.Key, _probeDictionary[entry.Value[0]]));
                     continue;
                 }
 
@@ -200,7 +204,7 @@ namespace CircuitSimulator
 
                     if (createdNode != null)
                     {
-                        nodeMapping.Add(entry.Key, createdNode);
+                        _nodeMapping.Add(entry.Key, createdNode);
                         continue;
                     }
                 }
@@ -212,26 +216,26 @@ namespace CircuitSimulator
             foreach (KeyValuePair<string, string[]> entry in fileStringMapping)
             {
                 // create mapping of the edges
-                edgeMapping.Add(entry.Key, entry.Value);
+                _edgeMapping.Add(entry.Key, entry.Value);
             }
         }
 
         public void CreateCircuit()
         {
-            foreach (var edge in edgeMapping)
+            foreach (var edge in _edgeMapping)
             {
                 // check if entry is input (existing key in inputMapping) should be the last check!
-                foreach (var input in inputs)
+                foreach (var input in _inputs)
                 {
                     if (edge.Key == input._name)
                     {
                         INodeComponent edgeValuesWrapComposite = CreateNodeComponent(edge);
-                        inputMapping.Add(input, edgeValuesWrapComposite);
+                        _inputMapping.Add(input, edgeValuesWrapComposite);
                     }
                 }
             }
 
-            _circuit.SetMappings(inputMapping, probeMapping);
+            _circuit.SetMappings(_inputMapping, _probeMapping);
         }
 
         public INodeComponent CreateNodeComponent(KeyValuePair<string, string[]> edge)
@@ -242,17 +246,17 @@ namespace CircuitSimulator
             {
                 NodeComposite nodeComposite = new NodeComposite();
 
-                if (nodeMapping.ContainsKey(value))
+                if (_nodeMapping.ContainsKey(value))
                 {
                     // add Node object to composite
-                    nodeComposite.AddChild(nodeMapping[value]);
+                    nodeComposite.AddChild(_nodeMapping[value]);
                 } else
                 {
-                    foreach (var probe in probes)
+                    foreach (var probe in _probes)
                     {
                         if (probe._name == value)
                         {
-                            probeMapping.Add(nodeComposite, probe);
+                            _probeMapping.Add(nodeComposite, probe);
                             break;
                         }
                     }
@@ -260,9 +264,9 @@ namespace CircuitSimulator
                 
 
                 // add child composite
-                if (edgeMapping.ContainsKey(value))
+                if (_edgeMapping.ContainsKey(value))
                 {
-                    KeyValuePair<string, string[]> childEdge = new KeyValuePair<string, string[]>(value, edgeMapping[value]);
+                    KeyValuePair<string, string[]> childEdge = new KeyValuePair<string, string[]>(value, _edgeMapping[value]);
                     INodeComponent childEdgeValuesWrapComposite = CreateNodeComponent(childEdge);
                     nodeComposite.AddChild(childEdgeValuesWrapComposite);
                 }

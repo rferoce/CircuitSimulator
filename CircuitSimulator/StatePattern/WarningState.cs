@@ -21,9 +21,7 @@ namespace CircuitSimulator.StatePattern
                 context.SetState(new ErrorState(context), number);
             } else
             {
-                Console.ForegroundColor = ConsoleColor.Yellow;
-                Console.WriteLine("hmm this number is getting really high: {0}", number);
-                Console.ResetColor();
+                ConsoleWriterSingleton.Instance.ShowWarningStateMessage(number);
             }
         }
     }

@@ -8,6 +8,6 @@ namespace CircuitSimulator
 {
     public interface ISimulatorMediator
     {
-        void notify(Node sender, string message);
+        void Notify(Circuit sender, List<Probe> results);
     }
 }

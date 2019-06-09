@@ -18,9 +18,7 @@ namespace CircuitSimulator.StatePattern
             }
             else
             {
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine("Wow this is a high number: {0}, however we should be able to calculate that!", number);
-                Console.ResetColor();
+                ConsoleWriterSingleton.Instance.ShowErrorStateMessage(number);
             }
         }
     }
